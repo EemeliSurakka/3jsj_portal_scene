@@ -1,0 +1,10 @@
+node_modules
+
+vcs.xml
+
+draco_decoder.js
+
+draco_decoder.wasm
+draco_decoder.js
+draco_encoder.js
+draco_wasm_wrapper.js
