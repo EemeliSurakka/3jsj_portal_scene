@@ -1,5 +1,7 @@
 varying vec2 vUv;
 uniform float uTime;
+uniform vec3 uColorStart;
+uniform vec3 uColorEnd;
 
 //	Classic Perlin 3D Noise
 //	by Stefan Gustavson
@@ -97,9 +99,10 @@ void main() {
     noise += noise + step(- 0.2, noise) * 0.8;
 //    noise = step(0.5, noise);
 
-//    gl_FragColor = vec4(outerGlow, outerGlow, outerGlow, 1.0);
-    gl_FragColor = vec4(noise, noise, noise, 1.0);
+    // Portal color
+    vec3 color = mix(uColorStart, uColorEnd, noise);
 
+    gl_FragColor = vec4(color, 1.0);
 
 
     #include <colorspace_fragment>
