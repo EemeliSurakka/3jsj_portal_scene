@@ -3,11 +3,14 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import firefliesVertexShader from './shaders/fireflies/vertex.glsl'
+import firefliesFragmentShader from './shaders/fireflies/fragment.glsl'
 
 /**
  * Base
  */
 // Debug
+const debugObject = {}
 const gui = new GUI({
     width: 400
 })
@@ -76,6 +79,40 @@ gltfLoader.load(
 )
 
 /**
+ * Fireflies
+ */
+// geometry
+const firefliesGeometry = new THREE.BufferGeometry()
+const firefliesCount = 30
+const positionArray = new Float32Array(firefliesCount * 3)
+
+for (let i = 0; i < firefliesCount; i++) {
+    positionArray[i * 3 + 0] = (Math.random() - 0.5) * 4
+    positionArray[i * 3 + 1] = Math.random() * 2
+    positionArray[i * 3 + 2] = (Math.random() - 0.5) * 4
+}
+
+firefliesGeometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3))
+
+// material
+const firefliesMaterial = new THREE.ShaderMaterial({
+    vertexShader: firefliesVertexShader,
+    fragmentShader: firefliesFragmentShader,
+
+    // size: 0.1,
+    // sizeAttenuation: true,
+    // color: '#ff0000',
+    // transparent: true,
+    // alphaMap: textureLoader.load('firefly.png'),
+    // depthWrite: false,
+    // blending: THREE.AdditiveBlending,
+})
+
+// points
+const fireflies = new THREE.Points(firefliesGeometry, firefliesMaterial)
+scene.add(fireflies)
+
+/**
  * Sizes
  */
 const sizes = {
@@ -121,6 +158,13 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+debugObject.clearColor = '#201919'
+renderer.setClearColor(debugObject.clearColor)
+gui.addColor(debugObject, 'clearColor').onFinishChange(() =>
+{
+    renderer.setClearColor(debugObject.clearColor)
+})
 
 /**
  * Animate
