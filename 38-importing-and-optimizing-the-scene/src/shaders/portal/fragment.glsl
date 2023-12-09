@@ -97,7 +97,8 @@ void main() {
 
     // Apply step for low poly effect
     noise += noise + step(- 0.2, noise) * 0.8;
-//    noise = step(0.5, noise);
+    // Fix bug with colors going out of range
+    noise = clamp(noise, 0.0, 1.0);
 
     // Portal color
     vec3 color = mix(uColorStart, uColorEnd, noise);

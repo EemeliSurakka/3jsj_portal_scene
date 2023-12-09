@@ -57,8 +57,8 @@ const poleLightMaterial = new THREE.MeshBasicMaterial({
     color: 0xffffe5,
 })
 
-debugObject.portalColorStart = '#ff0000'
-debugObject.portalColorEnd = '#0000ff'
+debugObject.portalColorStart = '#000000'
+debugObject.portalColorEnd = '#ffffff'
 gui.addColor(debugObject, 'portalColorStart').onChange(() =>
 {
     portalLightMaterial.uniforms.uColorStart.value.set(debugObject.portalColorStart)
